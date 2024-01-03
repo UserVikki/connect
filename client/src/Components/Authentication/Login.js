@@ -36,11 +36,11 @@ const Login = () => {
               },
           };
           const {data} = await axios.post(
-              "/user/login",
+              "/user/login",  
               {username,password},
               config
           );
-          // console.log(JSON.stringify(data));
+          console.log(JSON.stringify(data));
           toast({
               title:"Login Successfull",
               status:"success",
@@ -56,7 +56,7 @@ const Login = () => {
       } catch (error) {
           console.log(error);
           toast({
-              title:"Error Occured",
+              title:"Error Occureddd",
               description:error.response.data.message,
               status:"error",
               duration:5000,

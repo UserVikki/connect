@@ -2,8 +2,8 @@ const generateToken = require("../config/generateToken");
 const User = require("../models/userSchema");
 const asyncHandler = require("express-async-handler");
 const register = asyncHandler(async(req,res) => {
-    const {name , username, password, publicKey} = req.body;
-    if(!name || !username || !password || !publicKey){
+    const {name , username, password} = req.body;
+    if(!name || !username || !password){
         res.status(400);
         throw new Error("Please enter all the fields");
     }
@@ -15,9 +15,9 @@ const register = asyncHandler(async(req,res) => {
     const user = await User.create({
         name,
         username,
-        password,
-        publicKey
+        password
     });
+    // console.log(user);
     if(user){
         res.status(201).json({
             _id:user._id,

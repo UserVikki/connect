@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider'
-import { Box, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import { getSender, getSenderFull } from '../config/ChatLogics';
-import ProfileModal from './Miscellaneous/ProfileModal';
+import { Box, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react'
+import { ArrowBackIcon } from '@chakra-ui/icons'
+import { getSender, getSenderFull } from '../config/ChatLogics'
+import ProfileModal from './Miscellaneous/ProfileModal'
 import axios from 'axios';
-import "./styles.css";
+import "./styles.css"
 import ScrollableChat from './ScrollableChat';
 import io from "socket.io-client";
 import * as secp from '@noble/secp256k1';
@@ -13,16 +13,16 @@ import CryptoJS from 'react-native-crypto-js';
 const ENDPOINT = "http://localhost:5000";
 let socket, selectedChatCompare;
 
-const getPublicKey = (chat,userId) => {
-    const users = chat.users;
-    return (users[0]._id===userId?users[1].publicKey:users[0].publicKey);
-}
-let ToBase64 = function (u8) {
-    return btoa(String.fromCharCode.apply(null, u8));
-}
-let FromBase64 = function (str) {
-    return atob(str).split('').map(function (c) { return c.charCodeAt(0); });
-}
+// const getPublicKey = (chat,userId) => {
+//     const users = chat.users;
+//     return (users[0]._id===userId?users[1].publicKey:users[0].publicKey);
+// }
+// let ToBase64 = function (u8) {
+//     return btoa(String.fromCharCode.apply(null, u8));
+// }
+// let FromBase64 = function (str) {
+//     return atob(str).split('').map(function (c) { return c.charCodeAt(0); });
+// }
 
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
     const [messages,setMessages] = useState([]);
@@ -110,14 +110,14 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
         if(event.key === "Enter" && newMessage){
             socket.emit("stop typing",selectedChat._id);
             try {
-                const pbkey = getPublicKey(selectedChat,user._id);
-                const prkey = localStorage.getItem(user.username+"_privkey");
-                var pubKey = FromBase64(pbkey);
-                var privKey = FromBase64(prkey);
-                const shared = secp.getSharedSecret(privKey, pubKey);
-                var sh = ToBase64(shared);
+                // const pbkey = getPublicKey(selectedChat,user._id);
+                // const prkey = localStorage.getItem(user.username+"_privkey");
+                // var pubKey = FromBase64(pbkey);
+                // var privKey = FromBase64(prkey);
+                // const shared = secp.getSharedSecret(privKey, pubKey);
+                // var sh = ToBase64(shared);
                 let y = newMessage;
-                const encrypted = CryptoJS.AES.encrypt(y, sh).toString();
+                // const encrypted = CryptoJS.AES.encrypt(y, sh).toString();
                 const config = {
                     headers : {
                         "Content-type" : "application/json",
@@ -125,21 +125,18 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
                     },
                 };
                 setNewMessage("");
-                let x = {
-                    _id:"#",
-                    sender:user,
-                    content:y
-                };
-                setMessages([...messages,x]);
+                // let x = {
+                //     _id:"#",
+                //     sender:user,
+                //     content:y
+                // };
                 const {data} = await axios.post("/message",{
-                    content:encrypted,
+                    content:y,
                     chatId:selectedChat._id,
                 },config);
                 console.log(data);
                 // setMessages([...messages,data]);
-                messages[messages.length-1]=data;
-                var tmp=messages;
-                setMessages(tmp);
+                setMessages([...messages,data]);
                 socket.emit("new message",data);
             } catch (error) {
                 toast({
@@ -171,7 +168,7 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
                 socket.emit("stop typing",selectedChat._id);
                 setTyping(false);
             }
-        });
+        },3000);    
     }
   return (
     <>

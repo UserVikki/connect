@@ -3,13 +3,13 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import * as secp from '@noble/secp256k1';
-let ToBase64 = function (u8) {
-    return btoa(String.fromCharCode.apply(null, u8));
-}
+// let ToBase64 = function (u8) {
+//     return btoa(String.fromCharCode.apply(null, u8));
+// }
 
-let FromBase64 = function (str) {
-    return atob(str).split('').map(function (c) { return c.charCodeAt(0); });
-}
+// let FromBase64 = function (str) {
+//     return atob(str).split('').map(function (c) { return c.charCodeAt(0); });
+// }
 const Registration = () => {
     const [name, setName] = useState();
     const [username, setUsername] = useState();
@@ -32,11 +32,11 @@ const Registration = () => {
         }
         try {
 
-            const privKey = secp.utils.randomPrivateKey();
-            const pubKey = secp.getPublicKey(privKey);
+            // const privKey = secp.utils.randomPrivateKey();
+            // const pubKey = secp.getPublicKey(privKey);
 
-            var pbkey  = ToBase64(pubKey);
-            var prkey  = ToBase64(privKey);
+            // var pbkey  = ToBase64(pubKey);
+            // var prkey  = ToBase64(privKey);
             // console.log(typeof(pubKey)," : ",typeof(pkey)," : ",pkey);
             // var x = FromBase64(pkey);
             // console.log(x," : ",pubKey," | ",typeof(x)," | ",(x===pubKey));
@@ -67,10 +67,10 @@ const Registration = () => {
             };
             const {data} = await axios.post(
                 "/user/register",
-                {name,username,password,publicKey:pbkey},
+                {name,username,password},
                 config
             );
-            // console.log(JSON.stringify(data));
+            console.log(JSON.stringify(data));
             toast({
                 title:"Registration Successfull",
                 status:"success",
@@ -80,7 +80,7 @@ const Registration = () => {
             });
 
             // const x=username+"Keys";
-            localStorage.setItem(username+"_privkey",prkey);
+            // localStorage.setItem(username+"_privkey",prkey);
             localStorage.setItem("userInfo",JSON.stringify(data));
             history.push("/chats");
         } catch (error) {

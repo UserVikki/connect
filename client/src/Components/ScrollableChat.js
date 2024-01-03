@@ -19,12 +19,12 @@ let FromBase64 = function (str) {
 
 const ScrollableChat = ({messages}) => {
     const {user,selectedChat} = ChatState();
-    const pbkey = getPublicKey(selectedChat,user._id);
-    const prkey = localStorage.getItem(user.username+"_privkey");
-    var pubKey = FromBase64(pbkey);
-    var privKey = FromBase64(prkey);
-    const shared = secp.getSharedSecret(privKey, pubKey);
-    var sh = ToBase64(shared);
+    // const pbkey = getPublicKey(selectedChat,user._id);
+    // const prkey = localStorage.getItem(user.username+"_privkey");
+    // var pubKey = FromBase64(pbkey);
+    // var privKey = FromBase64(prkey);
+    // const shared = secp.getSharedSecret(privKey, pubKey);
+    // var sh = ToBase64(shared);
     // useEffect(() => {
     // },[messages]);
   return (
@@ -59,8 +59,8 @@ const ScrollableChat = ({messages}) => {
                 }}>
 
                   {
-                    CryptoJS.AES.decrypt(m.content, sh).toString(CryptoJS.enc.Utf8)
-                    //m.content
+                    // CryptoJS.AES.decrypt(m.content, sh).toString(CryptoJS.enc.Utf8)
+                    m.content
                   }
 
                 </span>
